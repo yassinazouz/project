@@ -26,8 +26,9 @@ class LivresController extends AbstractController
         ]);
     }
     #[Route('/admin/livres/{id<\d+>}', name: 'app_admin_livres_show')]
-    public function show(Livres $livre): Response
+    public function show(Livres $livre ): Response
     {
+        //ParamConverter
         return $this->render('livres/show.html.twig', [
             'livre' => $livre,
         ]);
