@@ -24,13 +24,13 @@
 				<td>{{livre.prix}}</td>
 				<td>{{livre.categorie.libelle}}</td>
 				<td>
-					<a href="{{url('app_admin_livres')}}" class="btn btn-primary btn-sm">Voir plus...</a>
+					<a href="{{ path('app_admin_livres_show', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Voir plus...</a>
 				</td>
 				<td>
-					<a href="#" class="btn btn-danger btn-sm">Supprimer</a>
+					<a href="{{ path('app_admin_livres_delete', {'id': livre.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
 				</td>
 				<td>
-					<a href="#" class="btn btn-success btn-sm">Editer</a>
+					<a href="{{ path('app_admin_livres_update', {'id': livre.id}) }}" class="btn btn-success btn-sm">Editer</a>
 				</td>
 			</tr>
 

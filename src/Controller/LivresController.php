@@ -96,4 +96,22 @@ class LivresController extends AbstractController
         ]);
     }
     // créer une méthode update qui permet en connaissant id du livre de modifier son pris
+    #[Route('/admin/livres/update/{id}', name: 'app_admin_livres_update')]
+    public function update(EntityManagerInterface $em, Livres $livre): Response
+    {
+        $livre->setTitre('Titre du livre 10')
+            ->setEditeur('Editeur 1')
+            ->setISBN('111.1111.1111.1235')
+            ->setPrix(200)
+            ->setDateEdition(new \DateTime('01-01-2024'))
+            ->setSlug('titre-du-livre-10')
+            ->setResume('hfjhgdkfhfklgfdlkjgjgfmjgfgfjgjgbkjbfl,gj');
+        $em->persist($livre);
+        $em->flush();
+        dd($livre);
+        //return $this->render('livres/create.html.twig', [
+        //   'livre' => $livre,
+        // ]);
+        return $this->redirectToRoute('admin_livres');
+    }
 }
