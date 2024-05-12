@@ -1,11 +1,15 @@
 {% extends "base.html.twig" %}
 {# {% block title %}Hello {{ name }}!{% endblock %} #}
 {% block body %}
-	<h1>details du lives {{livres.titre}}</h1>
+	<h1>details du lives
+		{{livres.titre}}</h1>
 	<img src="{{ livres.image }}" alt="image">
-	<h4>prix: {{livres.prix}}</h4>
-	<h4>editeur: {{livres.editeur}}</h4>
-
+	<h4>prix:
+		{{livres.prix}}</h4>
+	<h4>editeur:
+		{{livres.Editeur}}</h4>
+	<h4>Categorie:
+		{{ livres.categorie.libelle }}</h4>
 	<p>{{livres.resume}}</p>
 	<a href="{{path('app_cart_add', {'id': livres.id}) }}" type="button" class="btn btn-success">Ajouter au panier</a>
 {% endblock %}

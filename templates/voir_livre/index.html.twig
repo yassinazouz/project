@@ -2,6 +2,11 @@
 {% extends "base.html.twig" %}
 {% block body %}
 	<h1>Liste des livres</h1>
+	<h1>Liste des livres</h1>
+	<form class="d-flex" role="search" action="{{ path('app_voir_livre_titre') }}" method="GET">
+		<input class="form-control me-sm-2" type="search" name="search" placeholder="search" aria-label="Search">
+		<button class="btn btn-secondary my-2 my-sm-0" type="submit">search</button>
+	</form>
 	<div style="display: flex; flex-wrap: wrap; gap: 20px;"> {# Added a flex container with wrapping and spacing #}
 		{% for livre in livres %}
 			<div class="card" style="width: 18rem;">
