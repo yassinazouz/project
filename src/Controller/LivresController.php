@@ -3,18 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\Livres;
+use App\Form\LivreType;
 use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 class LivresController extends AbstractController
 {
     #[Route('/admin/livres', name: 'app_admin_livres')]
+    
     public function index(LivresRepository $rep): Response
     {
+        
         // $livres = $rep->findGreaterThan(100);
         //dd($livres);
 
@@ -68,6 +74,26 @@ class LivresController extends AbstractController
         $em->remove($livre);
         $em->flush();
         dd($livre);
+    }
+
+    #[Route('/admin/livres/add', name: 'admin_livre_add')]
+    public function add(EntityManagerInterface $em, Request $request): Response
+    {
+        $livre = new Livres();
+        //creation d'un objet formulaire
+        $form = $this->createForm(LivreType::class, $livre);
+        // Récuperation et traitement des donnes
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid())
+        {
+            $em->persist($livre);
+            $em->flush();
+            return $this->redirectToRoute('app_admin_livres');
+        }
+        //Affichage du formulaire
+        return $this->render('livres/add.html.twig', [
+            'f' => $form,
+        ]);
     }
     // créer une méthode update qui permet en connaissant id du livre de modifier son pris
 }

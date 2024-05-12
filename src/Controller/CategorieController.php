@@ -31,8 +31,35 @@ class CategorieController extends AbstractController
 
         $form = $this->createForm(CategorieType::class, $categorie);
 
+        // Récuperation et traitement des donnes
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid())
+        {
+            $em->persist($categorie);
+            $em->flush();
+            return $this->redirectToRoute('admin_categorie');
+        }
         //Affichage du formulaire
         return $this->render('categorie/create.html.twig', [
+            'f' => $form,
+        ]);
+    }
+
+    #[Route('/admin/categorie/update/{id}', name: 'admin_categorie_update')]
+    public function update(Categorie $categorie,EntityManagerInterface $em, Request $request): Response
+    {
+        //creation d'un objet formulaire
+        $form = $this->createForm(CategorieType::class, $categorie);
+        // Récuperation et traitement des donnes
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid())
+        {
+            $em->persist($categorie);
+            $em->flush();
+            return $this->redirectToRoute('admin_categorie');
+        }
+        //Affichage du formulaire
+        return $this->render('categorie/update.html.twig', [
             'f' => $form,
         ]);
     }

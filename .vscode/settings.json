@@ -1,0 +1,23 @@
+{
+    "oracledevtools.connections": [
+        {
+            "authenticationType": 2,
+            "dBAPrivilege": "None",
+            "userID": "HR",
+            "passwordSaved": false,
+            "dataSource": "localhost:1521/XE",
+            "connectionType": 2,
+            "databaseHostName": "localhost",
+            "databasePortNumber": "1521",
+            "databaseServiceName": "XE",
+            "tnsAdmin": "C:\\Users\\yessi\\Oracle\\network\\admin",
+            "name": "HR.XE",
+            "color": "none",
+            "currentSchema": "",
+            "addSettingsScopeToConnectionName": false,
+            "addCurrentSchemaToConnectionName": false,
+            "filters": [],
+            "useCompatibleNamesDirectoryPath": true
+        }
+    ]
+}

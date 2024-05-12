@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LivresRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,6 +48,14 @@ class Livres
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     private ?Categorie $categorie = null;
+
+    #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'livres')]
+    private Collection $ordersDetails;
+
+    public function __construct()
+    {
+        $this->ordersDetails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,6 +190,36 @@ class Livres
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrdersDetails>
+     */
+    public function getOrdersDetails(): Collection
+    {
+        return $this->ordersDetails;
+    }
+
+    public function addOrdersDetail(OrdersDetails $ordersDetail): static
+    {
+        if (!$this->ordersDetails->contains($ordersDetail)) {
+            $this->ordersDetails->add($ordersDetail);
+            $ordersDetail->setLivres($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersDetail(OrdersDetails $ordersDetail): static
+    {
+        if ($this->ordersDetails->removeElement($ordersDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersDetail->getLivres() === $this) {
+                $ordersDetail->setLivres(null);
+            }
+        }
 
         return $this;
     }

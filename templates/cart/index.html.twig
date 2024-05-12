@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<main class ="container">
+    <section class="row">
+        <div class="col-12">
+            <h1>Panier</h1>
+            <table class="table">
+                <thead>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {% for element in data %}
+                        <tr>
+                            <td>{{element.livre.titre}}</td>
+                            <td> {{element.livre.prix}} TND </td>
+                            <td>{{element.quantite}} </td>
+                            <td>{{element.quantite * element.livre.prix}} TND</td>
+                            <td><a href="{{ path('app_cart_add', {'id': element.livre.id}) }}" class="btn btn-success">+</a>
+                            <td><a href="{{ path('app_cart_remove', {'id': element.livre.id}) }}" class="btn btn-warning">-</a>
+                            <td><a href="{{ path('app_cart_delete', {'id': element.livre.id}) }}" class="btn btn-danger">Supprimer</a>
+                            
+                                
+                            </td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                            <td colspan="5" class="text-center">Votre panier est vide</td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Total</td>
+                        <td>{{total}} TND</td>
+                        <td>
+                            <a href="{{ path('app_cart_vider') }}" class="btn btn-danger">Vider</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <a href="{{ path('app_orders_add') }}" class="btn btn-primary">Valider le panier</a>
+        </div>
+    </section>
+
+</main>
+{% endblock %}
