@@ -31,8 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private ?string $location = null;
+
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -45,17 +44,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->orders = new ArrayCollection();
     }
 
-    public function getLocation() : ?string
-    {
-        return $this->id;
-    }
-
-    public function setLocation(string $location): static
-    {
-        $this->location = $location;
-
-        return $this;
-    }
 
     public function getId(): ?int
     {
