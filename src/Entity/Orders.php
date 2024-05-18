@@ -28,9 +28,28 @@ class Orders
     #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'orders', orphanRemoval: true, cascade:['persist'])]
     private Collection $ordersDetails;
 
+    #[ORM\Column(type: 'string', length: 20, options: ['default' => 'En cours'])]
+    private ?string $etat = 'En cours';
+
     public function __construct()
     {
         $this->ordersDetails = new ArrayCollection();
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): static
+    {
+        if (!in_array($etat, ['En cours', 'Completée'])) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+
+        $this->etat = $etat;
+
+        return $this;
     }
 
     public function getId(): ?int

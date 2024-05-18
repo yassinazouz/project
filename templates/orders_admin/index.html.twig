@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+	<table class='table'>
+		<thead>
+			<th>id</th>
+			<th>ref</th>
+			<th>createdAt</th>
+			<th>email</th>
+			<th>etat</th>
+		</thead>
+		{% for order in orders %}
+			<tbody>
+				<td>{{order.id}}</td>
+				<td>{{order.ref}}</td>
+				<td>{{order.createdAt|date('Y-m-d H:i:s')}}</td>
+				<td>{{ order.users.email }}</td>
+				<td>
+					<form method="post" action="{{ path('update_etat', {'id': order.id}) }}">
+						<select name="etat" onchange="this.form.submit()">
+							<option value="En cours" {{ order.etat == 'En cours' ? 'selected' : '' }}>En cours</option>
+							<option value="Completée" {{ order.etat == 'Completée' ? 'selected' : '' }}>Completée</option>
+						</select>
+						<input type="hidden" name="_token" value="{{ csrf_token('update_etat' ~ order.id) }}">
+					</form>
+				</td>
+			</tbody>
+
+
+		{% endfor %}
+	</table>
+
+{% endblock %}
