@@ -13,12 +13,17 @@ use App\Repository\CategorieRepository;
 class VoirLivreController extends AbstractController
 {
     #[Route('/voir/livre', name: 'app_voir_livre')]
-    public function index(LivresRepository $rep): Response
+    public function index(LivresRepository $rep, Request $request): Response
     {
-
-        $livres = $rep->findAll();
+        $page = $request->query->getInt('page',1);
+        $limit = 8;
+        $livres = $rep->paginateLivres($page , $limit);
+        $maxPage = ceil(count($livres) / $limit);
+        
         return $this->render('voir_livre/index.html.twig', [
             'livres' => $livres,
+            'maxPage' => $maxPage,
+            'page' =>$page,
 
         ]);
     }
