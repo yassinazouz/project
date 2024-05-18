@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Order History{% endblock %}
+
+{% block body %}
+<h1>Order History</h1>
+
+{% if orders is empty %}
+    <p>You have no orders.</p>
+{% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Reference</th>
+                <th>Date</th>
+                <th>Book ID</th>
+                <th>Title</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                {% for orderDetail in order.ordersDetails %}
+                    <tr>
+                        <td>{{ order.ref }}</td>
+                        <td>{{ order.createdAt|date('Y-m-d H:i:s') }}</td>
+                        <td>{{ orderDetail.livres.id }}</td>
+                        <td>{{ orderDetail.livres.titre }}</td>
+                        <td>{{ orderDetail.quantity }}</td>
+                        <td>{{ orderDetail.price }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}
