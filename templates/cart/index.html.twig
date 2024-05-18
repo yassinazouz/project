@@ -7,6 +7,8 @@
     <section class="row">
         <div class="col-12">
             <h1>Panier</h1>
+            <form action="/commandes/checkout" method="POST">
+
             <table class="table">
                 <thead>
                     <th>Produit</th>
@@ -45,7 +47,8 @@
                     </tr>
                 </tfoot>
             </table>
-            <a href="{{ path('app_orders_add') }}" class="btn btn-primary">Valider le panier</a>
+            <button type="submit" class="btn btn-priamry btn-lg"> Checkout</button>
+            </form>
         </div>
     </section>
 
