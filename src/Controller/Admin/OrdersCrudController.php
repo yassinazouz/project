@@ -47,16 +47,12 @@ class OrdersCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            IdField::new('id')->hideOnForm(),
             TextField::new('ref')->onlyOnIndex(),
-            
-            DateTimeField::new('created_at'),
-            TextField::new('etat'),
-            
-
-
-
-            // Define other fields as needed
-            ChoiceField::new('etat')->onlyOnForms()->setChoices(['En cours' => 'En cours', 'Completée' => 'Completée']),
+            DateTimeField::new('created_at')->onlyOnIndex(),
+            ChoiceField::new('etat')
+                ->setChoices(['En cours' => 'En cours', 'Completée' => 'Completée'])
+                ->onlyOnForms(),
         ];
     }
     public function configureActions(Actions $actions): Actions
