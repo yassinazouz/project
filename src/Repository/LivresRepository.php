@@ -24,7 +24,6 @@ class LivresRepository extends ServiceEntityRepository
     }
     public function paginateLivres(int $page, int $limit) : Paginator
     {
-
         return new Paginator($this
         ->createQueryBuilder('r')
         ->setMaxResults($limit)

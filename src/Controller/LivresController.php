@@ -17,10 +17,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class LivresController extends AbstractController
 {
     #[Route('/admin/livres', name: 'app_admin_livres')]
-    
+
     public function index(LivresRepository $rep): Response
     {
-        
+
         // $livres = $rep->findGreaterThan(100);
         //dd($livres);
 
@@ -32,7 +32,7 @@ class LivresController extends AbstractController
         ]);
     }
     #[Route('/admin/livres/{id<\d+>}', name: 'app_admin_livres_show')]
-    public function show(Livres $livre ): Response
+    public function show(Livres $livre): Response
     {
         //ParamConverter
         return $this->render('livres/show.html.twig', [
@@ -84,8 +84,7 @@ class LivresController extends AbstractController
         $form = $this->createForm(LivreType::class, $livre);
         // Récuperation et traitement des donnes
         $form->handleRequest($request);
-        if ($form->isSubmitted() and $form->isValid())
-        {
+        if ($form->isSubmitted() and $form->isValid()) {
             $em->persist($livre);
             $em->flush();
             return $this->redirectToRoute('app_admin_livres');
@@ -113,5 +112,21 @@ class LivresController extends AbstractController
         //   'livre' => $livre,
         // ]);
         return $this->redirectToRoute('admin_livres');
+    }
+
+    #[Route('/image-good', name: 'app_livres', methods: ['GET'])]
+    public function imagesGood(LivresRepository $livresRepository, EntityManagerInterface $entityManager, Request $request): Response
+    {
+
+        $images = array("https://cdn.codegym.cc/images/article/adf7ede4-5356-485c-8cdf-561b75da2685/512.jpeg","https://th.bing.com/th/id/R.62d8ea821d604e77a3492cdc68deaec3?rik=w%2bhYV7q7KPil%2fw&pid=ImgRaw&r=0","https://th.bing.com/th/id/OIP.2fJsV7bQPtImZFJBKgWPaAAAAA?rs=1&pid=ImgDetMain");
+        $livres = $livresRepository->findAll();
+        foreach ($livres as $livre) {
+            $randomImageKey = array_rand($images);
+            $randomImage = $images[$randomImageKey];
+            $livre->setImage($randomImage);
+            $entityManager->persist($livre);
+        }
+        $entityManager->flush();
+        return new Response("all good");
     }
 }
