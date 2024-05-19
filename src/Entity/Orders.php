@@ -23,7 +23,7 @@ class Orders
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $users = null;
+    private ?User $users = null;
 
     #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'orders', orphanRemoval: true, cascade:['persist'])]
     private Collection $ordersDetails;
@@ -79,12 +79,12 @@ class Orders
         $this->created_at =new \DateTimeImmutable();
     }
 
-    public function getUsers(): ?user
+    public function getUsers(): ?User
     {
         return $this->users;
     }
 
-    public function setUsers(?user $users): static
+    public function setUsers(?User $users): static
     {
         $this->users = $users;
 

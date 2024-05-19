@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Livres;
 use App\Repository\LivresRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,25 +45,32 @@ class VoirLivreController extends AbstractController
     {
         $categories = $catrep->findAll();
         $searchTerm = $request->query->get('search');
-    
+        $page = $request->query->getInt('page', 1);
+        $limit = 8; // Number of results per page
+
         if ($searchTerm) {
-            $query = $livrep->createQueryBuilder('l')
+            $queryBuilder = $livrep->createQueryBuilder('l')
                 ->leftJoin('l.categorie', 'c')
-                ->where('l.titre LIKE :titre OR c.libelle LIKE :libelle or l.Editeur LIKE :Editeur ')
-                ->setParameter('titre','%' . $searchTerm . '%' )
-                ->setParameter('libelle', '%' . $searchTerm . '%')
-                ->setParameter('Editeur', '%' . $searchTerm . '%')
-                ->getQuery();
-    
-            $livres = $query->getResult();
+                ->where('l.titre LIKE :searchTerm OR c.libelle LIKE :searchTerm OR l.Editeur LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+
+            $query = $queryBuilder->getQuery()
+                ->setFirstResult($limit * ($page - 1))
+                ->setMaxResults($limit)
+                ->setHint(Paginator::HINT_ENABLE_DISTINCT, false);
+
+            $paginator = new Paginator($query, false);
         } else {
-            // Si aucun terme de recherche n'est spécifié, afficher tous les livres
-            $livres = $livrep->findAll();
+            $paginator = $livrep->paginateLivres($page, $limit);
         }
-    
+
+        $maxPage = ceil(count($paginator) / $limit);
+
         return $this->render('voir_livre/index.html.twig', [
-            'livres' => $livres,
+            'livres' => $paginator,
             'categories' => $categories,
+            'page' => $page,
+            'maxPage' => $maxPage,
         ]);
-        }
+    }
 }
