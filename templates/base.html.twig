@@ -64,7 +64,9 @@
                         </div>
                         <div class="navbar-nav ml-auto py-0">
                             <a href="{{url('app_cart_index')}}" class="nav-item nav-link">
-								<i class="fas fa-shopping-cart text-primary"></i>
+								<i class="fas fa-shopping-cart"></i>
+								<a href="{{url('app_historique')}}" class="nav-item nav-link">
+								<i class="fas fa-clock "></i>
 								
                         {% if app.user %}
                             <a href="{{ url('app_logout') }}" class="nav-item nav-link">logout</a>
