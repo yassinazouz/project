@@ -14,17 +14,24 @@ use App\Repository\CategorieRepository;
 class VoirLivreController extends AbstractController
 {
     #[Route('/voir/livre', name: 'app_voir_livre')]
-    public function index(LivresRepository $rep, Request $request): Response
+    public function index(LivresRepository $rep, Request $request , CategorieRepository $cat): Response
     {
         $page = $request->query->getInt('page',1);
-        $limit = 8;
+        $limit = 9;
         $livres = $rep->paginateLivres($page , $limit);
         $maxPage = ceil(count($livres) / $limit);
+        $categories = $cat->findAll();
         
+    // Price filter parameters
+    $priceMin = $request->query->get('price_min');
+    $priceMax = $request->query->get('price_max');
         return $this->render('voir_livre/index.html.twig', [
             'livres' => $livres,
             'maxPage' => $maxPage,
             'page' =>$page,
+            'categories' => $categories,
+            'priceMin' => $priceMin,
+            'priceMax' => $priceMax
 
         ]);
     }
@@ -40,30 +47,47 @@ class VoirLivreController extends AbstractController
         ]);
     }
 
+
     #[Route('/voir/livre/titre', name: 'app_voir_livre_titre')]
     public function search(Request $request, LivresRepository $livrep, CategorieRepository $catrep): Response
     {
         $categories = $catrep->findAll();
         $searchTerm = $request->query->get('search');
         $page = $request->query->getInt('page', 1);
-        $limit = 8; // Number of results per page
+        $limit = 10; // Number of results per page
     
-        if ($searchTerm) {
-            $queryBuilder = $livrep->createQueryBuilder('l')
-                ->leftJoin('l.categorie', 'c')
-                ->where('l.titre LIKE :searchTerm OR c.libelle LIKE :searchTerm OR l.Editeur LIKE :searchTerm')
-                ->setParameter('searchTerm', '%' . $searchTerm . '%');
-    
-            $query = $queryBuilder->getQuery()
-                ->setFirstResult($limit * ($page - 1))
-                ->setMaxResults($limit)
-                ->setHint(Paginator::HINT_ENABLE_DISTINCT, false);
-    
-            $paginator = new Paginator($query, false);
-        } else {
-            $paginator = $livrep->paginateLivres($page, $limit);
+        // Price filter parameters
+        $priceRanges = $request->query->all('price_range');
+        if (!is_array($priceRanges)) {
+            $priceRanges = [$priceRanges];
         }
     
+        // Debugging output
+        dump($priceRanges);
+    
+        // Create query builder
+        $queryBuilder = $livrep->createQueryBuilder('l')
+            ->leftJoin('l.categorie', 'c')
+            ->where('l.titre LIKE :searchTerm OR c.libelle LIKE :searchTerm OR l.Editeur LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%');
+    
+        // Add price range filtering
+        if (!empty($priceRanges)) {
+            $orX = $queryBuilder->expr()->orX();
+            foreach ($priceRanges as $priceRange) {
+                list($priceMin, $priceMax) = explode('-', $priceRange);
+                $orX->add($queryBuilder->expr()->between('l.prix', ':priceMin' . $priceMin, ':priceMax' . $priceMax));
+                $queryBuilder->setParameter('priceMin' . $priceMin, $priceMin);
+                $queryBuilder->setParameter('priceMax' . $priceMax, $priceMax);
+            }
+            $queryBuilder->andWhere($orX);
+        }
+    
+        $query = $queryBuilder->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+    
+        $paginator = new Paginator($query, false);
         $maxPage = ceil(count($paginator) / $limit);
     
         return $this->render('voir_livre/index.html.twig', [
@@ -71,7 +95,11 @@ class VoirLivreController extends AbstractController
             'categories' => $categories,
             'page' => $page,
             'maxPage' => $maxPage,
+            'searchTerm' => $searchTerm,
+            'priceRanges' => $priceRanges,
         ]);
     }
+
+
     
 }

@@ -35,67 +35,42 @@
 			<!-- Page Header End -->
 			{# <div style="display: flex; flex-wrap: wrap; gap: 20px;">																																															</div> #}
 			<!-- Shop Start -->
-				<div class="container-fluid pt-5"> <div
-					class="row px-xl-5">
-					<!-- Shop Sidebar Start -->
-					<div
-						class="col-lg-3 col-md-12">
-						<!-- Price Start -->
-						<div class="border-bottom mb-4 pb-4">
-							<h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-							<form>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" checked id="price-all">
-									<label class="custom-control-label" for="price-all">All Price</label>
-									<span class="badge border font-weight-normal">1000</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" id="price-1">
-									<label class="custom-control-label" for="price-1">$0 - $100</label>
-									<span class="badge border font-weight-normal">150</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" id="price-2">
-									<label class="custom-control-label" for="price-2">$100 - $200</label>
-									<span class="badge border font-weight-normal">295</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" id="price-3">
-									<label class="custom-control-label" for="price-3">$200 - $300</label>
-									<span class="badge border font-weight-normal">246</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" id="price-4">
-									<label class="custom-control-label" for="price-4">$300 - $400</label>
-									<span class="badge border font-weight-normal">145</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-									<input type="checkbox" class="custom-control-input" id="price-5">
-									<label class="custom-control-label" for="price-5">$400 - $500</label>
-									<span class="badge border font-weight-normal">168</span>
-								</div>
-							</form>
-						</div>
-						<!-- Price End -->
-						<!-- Category Start -->
-						<div class="border-bottom mb-4 pb-4">
-							<h5 class="font-weight-semi-bold mb-4">Filter by category</h5>
-							<form>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" checked id="category-all">
-									<label class="custom-control-label" for="category-all">All Category</label>
-									<span class="badge border font-weight-normal">1000</span>
-								</div>
-								<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-									<input type="checkbox" class="custom-control-input" id="category-1">
-									<label class="custom-control-label" for="category-1">Category 1</label>
-									<span class="badge border font-weight-normal">150</span>
-								</div>
-							</form>
-						</div>
+				<div class="container-fluid pt-5">
+            <div class="row px-xl-5">
+                <!-- Shop Sidebar Start -->
+                <div class="col-lg-3 col-md-12">
+                    <!-- Price Start -->
+                    <div class="border-bottom mb-4 pb-4">
+                        <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+                        <form action="{{ path('app_voir_livre_titre') }}" method="get">
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="price-1" name="price_range[]" value="0-20" {% if '0-20' in priceRanges %} checked {% endif %}>
+                                <label class="custom-control-label" for="price-1">$0 - $20</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="price-2" name="price_range[]" value="20-40" {% if '20-40' in priceRanges %} checked {% endif %}>
+                                <label class="custom-control-label" for="price-2">$20 - $40</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="price-3" name="price_range[]" value="40-60" {% if '40-60' in priceRanges %} checked {% endif %}>
+                                <label class="custom-control-label" for="price-3">$40 - $60</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="price-4" name="price_range[]" value="60-80" {% if '60-80' in priceRanges %} checked {% endif %}>
+                                <label class="custom-control-label" for="price-4">$60 - $80</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="price-5" name="price_range[]" value="80-100" {% if '80-100' in priceRanges %} checked {% endif %}>
+                                <label class="custom-control-label" for="price-5">$80 - $100</label>
+                            </div>
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Filter</button>
+                        </form>
+                    </div>
+                    <!-- Price End -->
 
-					</div>
-					<!-- Shop Sidebar End -->
+                    <!-- Category Start -->
+                    <!-- Category End -->
+                </div>
 
 
 					<!-- Shop Product Start -->
@@ -137,7 +112,7 @@
 												<i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
 
 											{# <a href="{{path('app_cart_add', {'id': livres.id}) }}" type="button" class="btn btn-sm text-dark p-0">
-												<i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a> #}
+																																														<i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a> #}
 										</div>
 
 									</div>
@@ -154,18 +129,18 @@
 									<ul class="pagination justify-content-center mb-3">
 										<li class="page-item">
 											{% if page > 1 %}
-												<a class="page-link" href="{{ path('app_voir_livre_titre', {page: page - 1, search: app.request.get('search')}) }}" aria-label="Previous">
+												<a class="page-link" href="{{ path('app_voir_livre_titre', {page: page - 1, search: app.request.get('search'), price_range: priceRanges}) }}" aria-label="Previous">
 													<span aria-hidden="true">&laquo;</span>
 													<span class="sr-only">Previous</span>
 												</a>
 											</li>
 										{% endif %}
 										{# <li class="page-item active"><a class="page-link" href="#">1</a></li>
-																																																																																																																																											                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-																																																																																																																																											                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+																																																																																																																																																																										                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+																																																																																																																																																																										                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
 										{% if page < maxPage %}
 											<li class="page-item">
-												<a class="page-link" href="{{ path('app_voir_livre_titre', {page: page + 1, search: app.request.get('search')}) }}" aria-label="Next">
+												<a class="page-link" href="{{ path('app_voir_livre_titre',{page: page + 1, search: app.request.get('search'), price_range: priceRanges})}}" aria-label="Next">
 													<span aria-hidden="true">&raquo;</span>
 													<span class="sr-only">Next</span>
 												</a>
@@ -236,7 +211,7 @@
 						<p class="mb-md-0 text-center text-md-left text-dark">
 							&copy;
 							<a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-																																																																																																																																																																																					                    by
+																																																																																																																																																																																																														                    by
 							<a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
 							Distributed By
 							<a href="https://themewagon.com" target="_blank">ThemeWagon</a>
@@ -265,7 +240,7 @@
 
 	</html>
 	{# <form class="d-flex" role="search" action="{{ path('app_voir_livre_titre') }}" method="GET">
-														<input class="form-control me-sm-2" type="search" name="search" placeholder="search" aria-label="Search" value="{{ app.request.get('search') }}">
-														<button class="btn btn-secondary my-2 my-sm-0" type="submit">search</button>
-													</form> #}
+																		<input class="form-control me-sm-2" type="search" name="search" placeholder="search" aria-label="Search" value="{{ app.request.get('search') }}">
+																		<button class="btn btn-secondary my-2 my-sm-0" type="submit">search</button>
+																	</form> #}
 {% endblock %}
