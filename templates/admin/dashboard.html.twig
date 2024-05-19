@@ -1,1 +1,9 @@
-{% extends "@EasyAdmin/page/content.html.twig" %}
+{# templates/admin/dashboard.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <div>
+        {{ render_chart(chart)}}
+    </div>
+{% endblock %}

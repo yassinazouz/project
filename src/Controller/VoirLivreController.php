@@ -47,25 +47,25 @@ class VoirLivreController extends AbstractController
         $searchTerm = $request->query->get('search');
         $page = $request->query->getInt('page', 1);
         $limit = 8; // Number of results per page
-
+    
         if ($searchTerm) {
             $queryBuilder = $livrep->createQueryBuilder('l')
                 ->leftJoin('l.categorie', 'c')
                 ->where('l.titre LIKE :searchTerm OR c.libelle LIKE :searchTerm OR l.Editeur LIKE :searchTerm')
                 ->setParameter('searchTerm', '%' . $searchTerm . '%');
-
+    
             $query = $queryBuilder->getQuery()
                 ->setFirstResult($limit * ($page - 1))
                 ->setMaxResults($limit)
                 ->setHint(Paginator::HINT_ENABLE_DISTINCT, false);
-
+    
             $paginator = new Paginator($query, false);
         } else {
             $paginator = $livrep->paginateLivres($page, $limit);
         }
-
+    
         $maxPage = ceil(count($paginator) / $limit);
-
+    
         return $this->render('voir_livre/index.html.twig', [
             'livres' => $paginator,
             'categories' => $categories,
@@ -73,4 +73,5 @@ class VoirLivreController extends AbstractController
             'maxPage' => $maxPage,
         ]);
     }
+    
 }
