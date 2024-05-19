@@ -25,13 +25,18 @@ class VoirLivreController extends AbstractController
     // Price filter parameters
     $priceMin = $request->query->get('price_min');
     $priceMax = $request->query->get('price_max');
+    $priceRanges = $request->query->all('price_range');
+        if (!is_array($priceRanges)) {
+            $priceRanges = [$priceRanges];
+        }
         return $this->render('voir_livre/index.html.twig', [
             'livres' => $livres,
             'maxPage' => $maxPage,
             'page' =>$page,
             'categories' => $categories,
             'priceMin' => $priceMin,
-            'priceMax' => $priceMax
+            'priceMax' => $priceMax,
+            'priceRanges' => $priceRanges,
 
         ]);
     }
