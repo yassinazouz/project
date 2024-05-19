@@ -104,7 +104,7 @@ class OrdersController extends AbstractController
     
 
     }
-    #[Route('/cancelURL', name: 'cancelURL')]
+    #[Route('/success', name: 'cancelURL')]
     public function cancelUrl(): Response
     {
         return $this->render('cart/cancel.html.twig', [
