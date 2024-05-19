@@ -1,56 +1,82 @@
 {% extends 'base.html.twig' %}
 
 
-
 {% block body %}
-<main class ="container">
-    <section class="row">
-        <div class="col-12">
-            <h1>Panier</h1>
-            <form action="/commandes/checkout" method="POST">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.ttf" rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<main class="container">
+		<section class="row">
+			<div class="col-12">
+				<h1>Panier</h1>
+				<form action="/commandes/checkout" method="POST">
 
-            <table class="table">
-                <thead>
-                    <th>Produit</th>
-                    <th>Prix</th>
-                    <th>Quantité</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    {% for element in data %}
-                        <tr>
-                            <td>{{element.livre.titre}}</td>
-                            <td> {{element.livre.prix}} TND </td>
-                            <td>{{element.quantite}} </td>
-                            <td>{{element.quantite * element.livre.prix}} TND</td>
-                            <td><a href="{{ path('app_cart_add', {'id': element.livre.id}) }}" class="btn btn-success">+</a>
-                            <td><a href="{{ path('app_cart_remove', {'id': element.livre.id}) }}" class="btn btn-warning">-</a>
-                            <td><a href="{{ path('app_cart_delete', {'id': element.livre.id}) }}" class="btn btn-danger">Supprimer</a>
-                            
-                                
-                            </td>
-                        </tr>
-                        {% else %}
-                            <tr>
-                            <td colspan="5" class="text-center">Votre panier est vide</td>
-                            </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">Total</td>
-                        <td>{{total}} TND</td>
-                        <td>
-                            <a href="{{ path('app_cart_vider') }}" class="btn btn-danger">Vider</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-            <button type="submit" class="btn btn-priamry btn-lg"> Checkout</button>
-            </form>
-        </div>
-    </section>
+					<table class="table">
+						<thead>
+							<th>Produit</th>
+							<th>Prix</th>
+							<th>Quantité</th>
+							<th>Total</th>
+							<th>Action</th>
+						</thead>
+						<tbody>
+							{% for element in data %}
+								<tr>
+									<td>{{element.livre.titre}}</td>
+									<td>
+										{{element.livre.prix}}
+										$
+									</td>
+									<td>
+										<div class="d-flex align-items-center mb-4 pt-2">
+											<div class="input-group quantity mr-3" style="width: 130px;">
+												<div class="input-group-btn">
+													<a class="btn btn-primary btn-minus" href="{{ path('app_cart_remove', {'id': element.livre.id}) }}">
+														<i class="fa fa-minus"></i>
+													</a>
+												</div>
+												<input type="text" class="form-control bg-secondary text-center" value={{element.quantite}}>
+												<div class="input-group-btn">
+													<a class="btn btn-primary btn-plus" href="{{ path('app_cart_add', {'id': element.livre.id}) }}">
+														<i class="fa fa-plus"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+										
 
-</main>
+
+									</td>
+									<td>{{element.quantite * element.livre.prix}}
+										$</td>
+									<td>
+										<a href="{{ path('app_cart_delete', {'id': element.livre.id}) }}" class="btn btn-danger">Supprimer</a>
+
+
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5" class="text-center">Votre panier est vide</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3">Total</td>
+								<td>{{total}}
+									$</td>
+								<td>
+									<a href="{{ path('app_cart_vider') }}" class="btn btn-danger">Vider</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+                    <button type="submit" class="btn btn-primary px-3">Checkout</button>
+				</form>
+			</div>
+		</section>
+
+	</main>
 {% endblock %}

@@ -59,7 +59,7 @@ class VoirLivreController extends AbstractController
         $categories = $catrep->findAll();
         $searchTerm = $request->query->get('search');
         $page = $request->query->getInt('page', 1);
-        $limit = 10; // Number of results per page
+        $limit = 9; // Number of results per page
     
         // Price filter parameters
         $priceRanges = $request->query->all('price_range');

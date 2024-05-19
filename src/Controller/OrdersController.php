@@ -14,6 +14,7 @@ use App\Entity\Orders;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/commandes', name: 'app_orders_')]
 class OrdersController extends AbstractController
@@ -21,6 +22,7 @@ class OrdersController extends AbstractController
     #[Route('/checkout', name: 'checkout')]
     public function checkout(SessionInterface $session, LivresRepository $livresrep, EntityManagerInterface $em, $stripeSK): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         Stripe::setApiKey($stripeSK);
     
         $panier = $session->get('panier', []);
