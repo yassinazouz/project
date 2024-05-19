@@ -61,7 +61,12 @@
                         <div class="navbar-nav ml-auto py-0">
                             <a href="{{url('app_cart_index')}}" class="nav-item nav-link">
 								<i class="fas fa-shopping-cart text-primary"></i>
-                            <a href="{{url('app_logout')}}" class="nav-item nav-link">logout</a>
+								
+                        {% if app.user %}
+                            <a href="{{ url('app_logout') }}" class="nav-item nav-link">logout</a>
+                        {% else %}
+                            <a href="{{ url('app_login') }}" class="nav-item nav-link">login</a>
+                        {% endif %}
                         </div>
                     </div>
                 </nav>
