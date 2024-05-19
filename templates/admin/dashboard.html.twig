@@ -2,32 +2,76 @@
 
 {% block content %}
     <style>
-        .center-container {
+        .chart-row {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
+
         .chart-container {
-            position: relative;
-            width: 80vw;
-            height: 40vh;
+            width: 48%; /* Adjust width to fit two charts side by side */
+            border: 2px solid #fff; /* Add white border around each chart */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .chart-container.middle {
+            width: 48%; /* Same width as other charts */
+            margin: 0 auto; /* Center the chart horizontally */
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 200px;
         }
     </style>
 
-    <div class="center-container">
-        <div class="chart-container">
-            <canvas id="myChart"></canvas>
+    <div class="container mt-5">
+        <div class="chart-row">
+            <div class="chart-container">
+                <canvas id="chart1" class="chart-canvas"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="chart2" class="chart-canvas"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container middle"> <!-- Add 'middle' class to center the chart -->
+            <canvas id="chart3" class="chart-canvas"></canvas>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: '{{ chart.type }}',
-            data: {{ chart.data|json_encode|raw }},
-            options: {{ chart.options|json_encode|raw }}
+        const chart1Data = {{ chart1.data|json_encode|raw }};
+        const chart1Options = {{ chart1.options|json_encode|raw }};
+        const chart1Ctx = document.getElementById('chart1').getContext('2d');
+        new Chart(chart1Ctx, {
+            type: '{{ chart1.type }}',
+            data: chart1Data,
+            options: chart1Options
+        });
+
+        const chart2Data = {{ chart2.data|json_encode|raw }};
+        const chart2Options = {{ chart2.options|json_encode|raw }};
+        const chart2Ctx = document.getElementById('chart2').getContext('2d');
+        new Chart(chart2Ctx, {
+            type: '{{ chart2.type }}',
+            data: chart2Data,
+            options: chart2Options
+        });
+
+        const chart3Data = {{ chart3.data|json_encode|raw }};
+        const chart3Options = {{ chart3.options|json_encode|raw }};
+        const chart3Ctx = document.getElementById('chart3').getContext('2d');
+        new Chart(chart3Ctx, {
+            type: '{{ chart3.type }}',
+            data: chart3Data,
+            options: chart3Options
         });
     </script>
 {% endblock %}
+
+

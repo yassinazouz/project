@@ -20,6 +20,27 @@ class OrdersDetailsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, OrdersDetails::class);
     }
+    public function findTopSoldBooks(): array
+    {
+        $startDate = new \DateTimeImmutable('2024-05-01');
+        $endDate = new \DateTimeImmutable('2024-05-31');
+        return $this->createQueryBuilder('od')
+            ->select('IDENTITY(od.livres) as id, l.titre, SUM(od.quantity) as quantity')
+            ->join('od.livres', 'l')
+            ->join('od.orders', 'o')
+            
+            ->groupBy('od.livres')
+            ->orderBy('quantity', 'DESC')
+            ->where('o.created_at BETWEEN :start_date AND :end_date')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            
+            ->setMaxResults(5) // Change this number according to your requirement
+            ->getQuery()
+            ->getResult();
+    
+    }
+   
 
 //    /**
 //     * @return OrdersDetails[] Returns an array of OrdersDetails objects

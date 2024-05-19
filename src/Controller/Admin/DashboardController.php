@@ -7,6 +7,8 @@ use App\Entity\Orders;
 use App\Entity\User;
 use App\Repository\CategorieRepository;
 use App\Repository\LivresRepository;
+use App\Repository\OrdersDetailsRepository;
+use App\Repository\OrdersRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -24,8 +26,8 @@ class DashboardController extends AbstractDashboardController
         $this->chartBuilder = $chartBuilder;
     }
 
-    #[Route('/admin/dashboard', name: 'admin_dashboard')]
-    public function dashboard(CategorieRepository $categorieRepository, LivresRepository $livresRepository): Response
+    #[Route('/admin', name: 'admin_dashboard')]
+    public function dashboard(CategorieRepository $categorieRepository, LivresRepository $livresRepository, OrdersDetailsRepository $ordersDetailsRepository, OrdersRepository $ordersRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $categories = $categorieRepository->findAll();
@@ -39,8 +41,8 @@ class DashboardController extends AbstractDashboardController
             $annoncesCount[] = $bookCount['bookCount'];
         }
         
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
-        $chart->setData([
+        $chart1 = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart1->setData([
             'labels' => $categNom,
             'datasets' => [
                 [
@@ -51,7 +53,7 @@ class DashboardController extends AbstractDashboardController
                 ],
             ],
         ]);
-        $chart->setOptions([
+        $chart1->setOptions([
             'scales' => [
                 'y' => [
                     'suggestedMin' => 0,
@@ -59,8 +61,72 @@ class DashboardController extends AbstractDashboardController
                 ],
             ],
         ]);
+        $topSoldBooks = $ordersDetailsRepository->findTopSoldBooks();
+
+        $bookTitles = [];
+        $quantities = [];
+
+        foreach ($topSoldBooks as $book) {
+            $bookTitles[] = $book['titre'];
+            $quantities[] = $book['quantity'];
+        }
+
+        $chart2 = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart2->setData([
+            'labels' => $bookTitles,
+            'datasets' => [
+                [
+                    'label' => 'Livre Le plus vendu entre 01/05/2024 et 31/05/2024',
+                    'backgroundColor' => '#49B3DA',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => $quantities,
+                ],
+            ],
+        ]);
+        $chart2->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 10,
+                ],
+            ],
+        ]);
+        $ordersByMonth = $ordersRepository->getCommandesNumberPerMonth(2024);
+
+        $months = [];
+        $orderCounts = [];
+    
+        foreach ($ordersByMonth as $data) {
+            $months[] = date('F', mktime(0, 0, 0, $data['month'], 1)); // Convert month number to month name
+            $orderCounts[] = $data['numCommandes'];
+        }
+    
+        $chart3 = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart3->setData([
+            'labels' => $months,
+            'datasets' => [
+                [
+                    'label' => 'Nombre de commandes par mois',
+                    'backgroundColor' => '#49B3DA',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => $orderCounts,
+                ],
+            ],
+        ]);
+        $chart3->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => max($orderCounts) + 5, // Adjust max value
+                ],
+            ],
+        ]);
+
+
         return $this->render('admin/dashboard.html.twig', [
-            'chart' => $chart,
+            'chart1' => $chart1,
+            'chart2' => $chart2,
+            'chart3' => $chart3,
         ]);
     }
 

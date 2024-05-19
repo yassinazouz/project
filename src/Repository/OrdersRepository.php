@@ -21,6 +21,19 @@ class OrdersRepository extends ServiceEntityRepository
         parent::__construct($registry, Orders::class);
     }
 
+    public function getCommandesNumberPerMonth($year): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('MONTH(c.created_at) as month, COUNT(c.id) as numCommandes')
+            ->where('YEAR(c.created_at) = :year')
+            ->setParameter('year', $year)
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Orders[] Returns an array of Orders objects
 //     */
