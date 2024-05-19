@@ -49,7 +49,7 @@ class Livres
     #[ORM\ManyToOne(inversedBy: 'livres')]
     private ?Categorie $categorie = null;
 
-    #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'livres')]
+    #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'livres',cascade: ['remove'])]
     private Collection $ordersDetails;
 
     public function __construct()
