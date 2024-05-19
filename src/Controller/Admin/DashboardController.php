@@ -41,14 +41,14 @@ class DashboardController extends AbstractDashboardController
             $annoncesCount[] = $bookCount['bookCount'];
         }
         
-        $chart1 = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart1 = $this->chartBuilder->createChart(Chart::TYPE_PIE);
         $chart1->setData([
             'labels' => $categNom,
             'datasets' => [
                 [
                     'label' => 'Nombre de livres',
-                    'backgroundColor' => '#49B3DA',
-                    'borderColor' => 'rgb(255, 99, 132)',
+                    'backgroundColor' => ['#49B3DA', '#F79A3E', '#6FB148'],
+                    
                     'data' => $annoncesCount,
                 ],
             ],
