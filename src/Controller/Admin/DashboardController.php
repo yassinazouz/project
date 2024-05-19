@@ -5,6 +5,8 @@ use App\Entity\Categorie;
 use App\Entity\Livres;
 use App\Entity\Orders;
 use App\Entity\User;
+use App\Repository\CategorieRepository;
+use App\Repository\LivresRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -23,31 +25,40 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin/dashboard', name: 'admin_dashboard')]
-    public function index(): Response
+    public function dashboard(CategorieRepository $categorieRepository, LivresRepository $livresRepository): Response
     {
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $categories = $categorieRepository->findAll();
+        $bookCounts = $categorieRepository->countBooksInCategories();
 
+        $categNom = [];
+        $annoncesCount = [];
+
+        foreach ($bookCounts as $bookCount) {
+            $categNom[] = $bookCount['category'];
+            $annoncesCount[] = $bookCount['bookCount'];
+        }
+        
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
         $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            'labels' => $categNom,
             'datasets' => [
                 [
-                    'label' => 'My First dataset',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'label' => 'Nombre de livres',
+                    'backgroundColor' => '#49B3DA',
                     'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
+                    'data' => $annoncesCount,
                 ],
             ],
         ]);
-
         $chart->setOptions([
             'scales' => [
                 'y' => [
                     'suggestedMin' => 0,
-                    'suggestedMax' => 100,
+                    'suggestedMax' => 15,
                 ],
             ],
         ]);
-
         return $this->render('admin/dashboard.html.twig', [
             'chart' => $chart,
         ]);

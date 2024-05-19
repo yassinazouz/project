@@ -20,6 +20,15 @@ class CategorieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Categorie::class);
     }
+    public function countBooksInCategories()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.libelle as category', 'COUNT(l.id) as bookCount')
+            ->leftJoin('c.livres', 'l')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Categorie[] Returns an array of Categorie objects

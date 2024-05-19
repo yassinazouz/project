@@ -75,6 +75,7 @@
 			</nav>
 			<div class="container mt-3"> {% block body %}{% endblock %}
 				</div>
+				{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
 
 			</body>
 		</html>
