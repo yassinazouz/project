@@ -76,7 +76,7 @@ class DashboardController extends AbstractDashboardController
             'labels' => $bookTitles,
             'datasets' => [
                 [
-                    'label' => 'Livre Le plus vendu entre 01/05/2024 et 31/05/2024',
+                    'label' => 'Offre Le plus vendu entre 01/03/2025 et 30/03/2025',
                     'backgroundColor' => '#49B3DA',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => $quantities,
@@ -91,7 +91,7 @@ class DashboardController extends AbstractDashboardController
                 ],
             ],
         ]);
-        $ordersByMonth = $ordersRepository->getCommandesNumberPerMonth(2024);
+        $ordersByMonth = $ordersRepository->getCommandesNumberPerMonth(2025);
 
         $months = [];
         $orderCounts = [];
@@ -139,7 +139,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('LivresCrud', 'fas fa-solid fa-book', Livres::class);
+        yield MenuItem::linkToCrud('OffresCrud', 'fas fa-solid fa-book', Livres::class);
         yield MenuItem::linkToCrud('UserCrud', 'fas fa-regular fa-user', User::class);
         yield MenuItem::linkToCrud('CategorieCrud', 'fas fa-list', Categorie::class);
         yield MenuItem::linkToCrud('OrdersCrud', 'fas fa-solid fa-truck-fast', Orders::class);

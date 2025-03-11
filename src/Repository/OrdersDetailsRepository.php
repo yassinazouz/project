@@ -22,8 +22,8 @@ class OrdersDetailsRepository extends ServiceEntityRepository
     }
     public function findTopSoldBooks(): array
     {
-        $startDate = new \DateTimeImmutable('2024-05-01');
-        $endDate = new \DateTimeImmutable('2024-05-31');
+        $startDate = new \DateTimeImmutable('2025-03-01');
+        $endDate = new \DateTimeImmutable('2025-05-30');
         return $this->createQueryBuilder('od')
             ->select('IDENTITY(od.livres) as id, l.titre, SUM(od.quantity) as quantity')
             ->join('od.livres', 'l')

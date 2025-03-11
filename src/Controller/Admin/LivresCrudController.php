@@ -24,7 +24,7 @@ class LivresCrudController extends AbstractCrudController
         return $crud
         ->setEntityLabelInPlural('Livres')
         ->setEntityLabelInSingular('Livre')
-        ->setPageTitle("index","- Administration des Livres -")
+        ->setPageTitle("index","- Administration des Offres -")
         ->setPaginatorPageSize(10);
         
 

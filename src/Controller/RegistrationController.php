@@ -39,14 +39,14 @@ class RegistrationController extends AbstractController
                 $form->get('plainPassword')->getData()
             )
         );
-        // $user->setRoles(['ROLE_ADMIN']);
+         $user->setRoles(['ROLE_ADMIN']);
         $entityManager->persist($user);
         $entityManager->flush();
 
         // generate a signed url and email it to the user
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
             (new TemplatedEmail())
-                ->from(new Address('symbook@gmail.com', 'symbook'))
+                ->from(new Address('TT@gmail.com', 'TunisieTelecom'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
