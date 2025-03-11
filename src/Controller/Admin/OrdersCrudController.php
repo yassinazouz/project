@@ -39,7 +39,7 @@ class OrdersCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Order')
             ->setEntityLabelInPlural('Orders')
-            ->setPageTitle("index","- Administration des Livres -")
+            ->setPageTitle("index","- Administration des Offres -")
             ->setPaginatorPageSize(10)
             ->setDefaultSort(['id' => 'DESC']);
     }

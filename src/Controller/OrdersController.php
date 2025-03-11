@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\OrdersDetails;
-use App\Repository\LivresRepository;
+use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class OrdersController extends AbstractController
 {
     #[Route('/checkout', name: 'checkout')]
-    public function checkout(SessionInterface $session, LivresRepository $livresrep, EntityManagerInterface $em, $stripeSK): Response
+    public function checkout(SessionInterface $session, OffresRepository $Offresrep, EntityManagerInterface $em, $stripeSK): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         Stripe::setApiKey($stripeSK);
@@ -30,15 +30,15 @@ class OrdersController extends AbstractController
     
         $lineItems = [];
         foreach ($panier as $id => $quantity) {
-            $livre = $livresrep->find($id);
-            $price = $livre->getPrix();
+            $Offre = $Offresrep->find($id);
+            $price = $Offre->getPrix();
             $total += $price * $quantity;
     
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $livre->getTitre(),
+                        'name' => $Offre->getTitre(),
                     ],
                     'unit_amount' => $price * 100,
                 ],
@@ -58,7 +58,7 @@ class OrdersController extends AbstractController
     }
 
     #[Route('/successURL', name: 'successURL')]
-    public function successURL(SessionInterface $session, LivresRepository $livresrep, EntityManagerInterface $em): Response
+    public function successURL(SessionInterface $session, OffresRepository $Offresrep, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $panier = $session->get('panier',[]);
@@ -81,12 +81,12 @@ class OrdersController extends AbstractController
         {
             $orderDetails = new OrdersDetails(); 
 
-            $livre = $livresrep->find($item);
-            $price = $livre->getPrix();
+            $Offre = $Offresrep->find($item);
+            $price = $Offre->getPrix();
 
-            $livre->setQte($livre->getQte() - $quantity);
+            $Offre->setQte($Offre->getQte() - $quantity);
 
-            $orderDetails->setLivres($livre);
+            $orderDetails->setOffres($Offre);
             $orderDetails->setPrice($price);
             $orderDetails->setQuantity($quantity);
 

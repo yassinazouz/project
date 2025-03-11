@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\LivresRepository;
+use App\Repository\OffresRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LivresRepository::class)]
-class Livres
+#[ORM\Entity(repositoryClass: OffresRepository::class)]
+class Offres
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,10 +46,10 @@ class Livres
     #[ORM\Column]
     private ?int $qte = null;
 
-    #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\ManyToOne(inversedBy: 'Offres')]
     private ?Categorie $categorie = null;
 
-    #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'livres',cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: OrdersDetails::class, mappedBy: 'Offres',cascade: ['remove'])]
     private Collection $ordersDetails;
 
     public function __construct()
@@ -206,7 +206,7 @@ class Livres
     {
         if (!$this->ordersDetails->contains($ordersDetail)) {
             $this->ordersDetails->add($ordersDetail);
-            $ordersDetail->setLivres($this);
+            $ordersDetail->setOffres($this);
         }
 
         return $this;
@@ -216,8 +216,8 @@ class Livres
     {
         if ($this->ordersDetails->removeElement($ordersDetail)) {
             // set the owning side to null (unless already changed)
-            if ($ordersDetail->getLivres() === $this) {
-                $ordersDetail->setLivres(null);
+            if ($ordersDetail->getOffres() === $this) {
+                $ordersDetail->setOffres(null);
             }
         }
 

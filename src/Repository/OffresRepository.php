@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Livres;
+use App\Entity\Offres;
 use Composer\DependencyResolver\Request;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Livres>
+ * @extends ServiceEntityRepository<Offres>
  *
- * @method Livres|null find($id, $lockMode = null, $lockVersion = null)
- * @method Livres|null findOneBy(array $criteria, array $orderBy = null)
- * @method Livres[]    findAll()
- * @method Livres[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Offres|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Offres|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Offres[]    findAll()
+ * @method Offres[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LivresRepository extends ServiceEntityRepository
+class OffresRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Livres::class);
+        parent::__construct($registry, Offres::class);
     }
-    public function paginateLivres(int $page, int $limit) : Paginator
+    public function paginateOffres(int $page, int $limit) : Paginator
     {
         return new Paginator($this
         ->createQueryBuilder('r')
@@ -35,7 +35,7 @@ class LivresRepository extends ServiceEntityRepository
     }
 
     //    /**
-    //     * @return Livres[] Returns an array of Livres objects
+    //     * @return Offres[] Returns an array of Offres objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -49,7 +49,7 @@ class LivresRepository extends ServiceEntityRepository
     //        ;
     //    }
     /**
-     *  @return Livres[] Returns an array of Livres objects
+     *  @return Offres[] Returns an array of Offres objects
    
      */
     public function findGreaterThan($prix): array
@@ -63,7 +63,7 @@ class LivresRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findOneBySomeField($value): ?Livres
+    public function findOneBySomeField($value): ?Offres
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.exampleField = :val')

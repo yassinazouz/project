@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Categorie;
-use App\Entity\Livres;
+use App\Entity\Offres;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -24,9 +24,9 @@ class AppFixtures extends Fixture
             $manager->persist($cat);
             for ($i = 1; $i < random_int(10, 15); $i++) {
 
-                $livre = new Livres();
+                $Offre = new Offres();
                 $titre = $faker->name();
-                $livre->setAuteur($faker->userName())
+                $Offre->setAuteur($faker->userName())
                     ->setDateEdition($faker->dateTime())
                     ->setTitre($titre)
                     ->setResume($faker->sentence(20))
@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
                     ->setISBN($faker->isbn13())
                     ->setImage($faker->imageUrl())
                     ->setCategorie($cat);
-                $manager->persist($livre);
+                $manager->persist($Offre);
             }
             $manager->flush();
         }

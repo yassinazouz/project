@@ -25,12 +25,12 @@ class Categorie
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(targetEntity: Livres::class, mappedBy: 'categorie', cascade: ['remove'])]
-    private Collection $livres;
+    #[ORM\OneToMany(targetEntity: Offres::class, mappedBy: 'categorie', cascade: ['remove'])]
+    private Collection $Offres;
 
     public function __construct()
     {
-        $this->livres = new ArrayCollection();
+        $this->Offres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,29 +75,29 @@ class Categorie
     }
 
     /**
-     * @return Collection<int, Livres>
+     * @return Collection<int, Offres>
      */
-    public function getLivres(): Collection
+    public function getOffres(): Collection
     {
-        return $this->livres;
+        return $this->Offres;
     }
 
-    public function addLivre(Livres $livre): static
+    public function addOffre(Offres $Offre): static
     {
-        if (!$this->livres->contains($livre)) {
-            $this->livres->add($livre);
-            $livre->setCategorie($this);
+        if (!$this->Offres->contains($Offre)) {
+            $this->Offres->add($Offre);
+            $Offre->setCategorie($this);
         }
 
         return $this;
     }
 
-    public function removeLivre(Livres $livre): static
+    public function removeOffre(Offres $Offre): static
     {
-        if ($this->livres->removeElement($livre)) {
+        if ($this->Offres->removeElement($Offre)) {
             // set the owning side to null (unless already changed)
-            if ($livre->getCategorie() === $this) {
-                $livre->setCategorie(null);
+            if ($Offre->getCategorie() === $this) {
+                $Offre->setCategorie(null);
             }
         }
 

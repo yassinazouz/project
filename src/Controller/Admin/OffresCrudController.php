@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Livres;
+use App\Entity\Offres;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -12,18 +12,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class LivresCrudController extends AbstractCrudController
+class OffresCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Livres::class;
+        return Offres::class;
     }
 
     public function configureCrud (Crud $crud):Crud
     {
         return $crud
-        ->setEntityLabelInPlural('Livres')
-        ->setEntityLabelInSingular('Livre')
+        ->setEntityLabelInPlural('Offres')
+        ->setEntityLabelInSingular('Offre')
         ->setPageTitle("index","- Administration des Offres -")
         ->setPaginatorPageSize(10);
         

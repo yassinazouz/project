@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Livres;
-use App\Form\LivreType;
-use App\Repository\LivresRepository;
+use App\Entity\Offres;
+use App\Form\OffreType;
+use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,36 +14,36 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-class LivresController extends AbstractController
+class OffresController extends AbstractController
 {
-    #[Route('/admin/livres', name: 'app_admin_livres')]
+    #[Route('/admin/Offres', name: 'app_admin_Offres')]
 
-    public function index(LivresRepository $rep): Response
+    public function index(OffresRepository $rep): Response
     {
 
-        // $livres = $rep->findGreaterThan(100);
-        //dd($livres);
+        // $Offres = $rep->findGreaterThan(100);
+        //dd($Offres);
 
-        $livres = $rep->findAll();
-        //dd($livres);
+        $Offres = $rep->findAll();
+        //dd($Offres);
 
-        return $this->render('livres/index.html.twig', [
-            'livres' => $livres,
+        return $this->render('Offres/index.html.twig', [
+            'Offres' => $Offres,
         ]);
     }
-    #[Route('/admin/livres/{id<\d+>}', name: 'app_admin_livres_show')]
-    public function show(Livres $livre): Response
+    #[Route('/admin/Offres/{id<\d+>}', name: 'app_admin_Offres_show')]
+    public function show(Offres $Offre): Response
     {
         //ParamConverter
-        return $this->render('livres/show.html.twig', [
-            'livre' => $livre,
+        return $this->render('Offres/show.html.twig', [
+            'Offre' => $Offre,
         ]);
     }
-    #[Route('/admin/livres/create', name: 'app_admin_livres_create')]
+    #[Route('/admin/Offres/create', name: 'app_admin_Offres_create')]
     public function create(EntityManagerInterface $em): Response
     {
-        $livre1 = new Livres();
-        $livre1->setAuteur('auteur 1')
+        $Offre1 = new Offres();
+        $Offre1->setAuteur('auteur 1')
             ->setDateEdition(new \DateTime('01-01-2023'))
             ->setTitre('Titre 4')
             ->setResume('jhgkjhkjhlhdjfjfdgpghkgmgbkmgblkgm')
@@ -52,8 +52,8 @@ class LivresController extends AbstractController
             ->setEditeur('Eni')
             ->setISBN('111.1111.1111.1115')
             ->setImage('https://picsum.photos/300');
-        $livre2 = new Livres();
-        $livre2->setAuteur('auteur 1')
+        $Offre2 = new Offres();
+        $Offre2->setAuteur('auteur 1')
             ->setDateEdition(new \DateTime('01-01-2023'))
             ->setTitre('Titre 4')
             ->setResume('jhgkjhkjhlhdjfjfdgpghkgmgbkmgblkgm')
@@ -62,69 +62,69 @@ class LivresController extends AbstractController
             ->setEditeur('Eni')
             ->setISBN('111.1111.1111.1115')
             ->setImage('https://picsum.photos/300');
-        $em->persist($livre1);
-        $em->persist($livre2);
+        $em->persist($Offre1);
+        $em->persist($Offre2);
         $em->flush();
-        dd($livre1);
+        dd($Offre1);
     }
-    #[Route('/admin/livres/delete/{id}', name: 'app_admin_livres_delete')]
-    public function delete(EntityManagerInterface $em, Livres $livre): Response
+    #[Route('/admin/Offres/delete/{id}', name: 'app_admin_Offres_delete')]
+    public function delete(EntityManagerInterface $em, Offres $Offre): Response
     {
 
-        $em->remove($livre);
+        $em->remove($Offre);
         $em->flush();
-        dd($livre);
+        dd($Offre);
     }
 
-    #[Route('/admin/livres/add', name: 'admin_livre_add')]
+    #[Route('/admin/Offres/add', name: 'admin_Offre_add')]
     public function add(EntityManagerInterface $em, Request $request): Response
     {
-        $livre = new Livres();
+        $Offre = new Offres();
         //creation d'un objet formulaire
-        $form = $this->createForm(LivreType::class, $livre);
+        $form = $this->createForm(OffreType::class, $Offre);
         // Récuperation et traitement des donnes
         $form->handleRequest($request);
         if ($form->isSubmitted() and $form->isValid()) {
-            $em->persist($livre);
+            $em->persist($Offre);
             $em->flush();
-            return $this->redirectToRoute('app_admin_livres');
+            return $this->redirectToRoute('app_admin_Offres');
         }
         //Affichage du formulaire
-        return $this->render('livres/add.html.twig', [
+        return $this->render('Offres/add.html.twig', [
             'f' => $form,
         ]);
     }
-    // créer une méthode update qui permet en connaissant id du livre de modifier son pris
-    #[Route('/admin/livres/update/{id}', name: 'app_admin_livres_update')]
-    public function update(EntityManagerInterface $em, Livres $livre): Response
+    // créer une méthode update qui permet en connaissant id du Offre de modifier son pris
+    #[Route('/admin/Offres/update/{id}', name: 'app_admin_Offres_update')]
+    public function update(EntityManagerInterface $em, Offres $Offre): Response
     {
-        $livre->setTitre('Titre du livre 10')
+        $Offre->setTitre('Titre du Offre 10')
             ->setEditeur('Editeur 1')
             ->setISBN('111.1111.1111.1235')
             ->setPrix(200)
             ->setDateEdition(new \DateTime('01-01-2024'))
-            ->setSlug('titre-du-livre-10')
+            ->setSlug('titre-du-Offre-10')
             ->setResume('hfjhgdkfhfklgfdlkjgjgfmjgfgfjgjgbkjbfl,gj');
-        $em->persist($livre);
+        $em->persist($Offre);
         $em->flush();
-        dd($livre);
-        //return $this->render('livres/create.html.twig', [
-        //   'livre' => $livre,
+        dd($Offre);
+        //return $this->render('Offres/create.html.twig', [
+        //   'Offre' => $Offre,
         // ]);
-        return $this->redirectToRoute('admin_livres');
+        return $this->redirectToRoute('admin_Offres');
     }
 
-    #[Route('/image-good', name: 'app_livres', methods: ['GET'])]
-    public function imagesGood(LivresRepository $livresRepository, EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/image-good', name: 'app_Offres', methods: ['GET'])]
+    public function imagesGood(OffresRepository $OffresRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
 
         $images = array("https://cdn.codegym.cc/images/article/adf7ede4-5356-485c-8cdf-561b75da2685/512.jpeg","https://th.bing.com/th/id/R.62d8ea821d604e77a3492cdc68deaec3?rik=w%2bhYV7q7KPil%2fw&pid=ImgRaw&r=0","https://th.bing.com/th/id/OIP.2fJsV7bQPtImZFJBKgWPaAAAAA?rs=1&pid=ImgDetMain");
-        $livres = $livresRepository->findAll();
-        foreach ($livres as $livre) {
+        $Offres = $OffresRepository->findAll();
+        foreach ($Offres as $Offre) {
             $randomImageKey = array_rand($images);
             $randomImage = $images[$randomImageKey];
-            $livre->setImage($randomImage);
-            $entityManager->persist($livre);
+            $Offre->setImage($randomImage);
+            $entityManager->persist($Offre);
         }
         $entityManager->flush();
         return new Response("all good");

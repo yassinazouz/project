@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Livres;
-use App\Repository\LivresRepository;
+use App\Entity\Offres;
+use App\Repository\OffresRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,15 +11,15 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CategorieRepository;
 
-class VoirLivreController extends AbstractController
+class VoirOffreController extends AbstractController
 {
-    #[Route('/voir/livre', name: 'app_voir_livre')]
-    public function index(LivresRepository $rep, Request $request , CategorieRepository $cat): Response
+    #[Route('/voir/Offre', name: 'app_voir_Offre')]
+    public function index(OffresRepository $rep, Request $request , CategorieRepository $cat): Response
     {
         $page = $request->query->getInt('page',1);
         $limit = 9;
-        $livres = $rep->paginateLivres($page , $limit);
-        $maxPage = ceil(count($livres) / $limit);
+        $Offres = $rep->paginateOffres($page , $limit);
+        $maxPage = ceil(count($Offres) / $limit);
         $categories = $cat->findAll();
         
     // Price filter parameters
@@ -29,8 +29,8 @@ class VoirLivreController extends AbstractController
         if (!is_array($priceRanges)) {
             $priceRanges = [$priceRanges];
         }
-        return $this->render('voir_livre/index.html.twig', [
-            'livres' => $livres,
+        return $this->render('voir_Offre/index.html.twig', [
+            'Offres' => $Offres,
             'maxPage' => $maxPage,
             'page' =>$page,
             'categories' => $categories,
@@ -41,20 +41,20 @@ class VoirLivreController extends AbstractController
         ]);
     }
 
-    #[Route('/voir/livre/detail/{id<\d+>}', name: 'app_voir_livre_detail')]
-    public function voirdetail(Livres $livre): Response
+    #[Route('/voir/Offre/detail/{id<\d+>}', name: 'app_voir_Offre_detail')]
+    public function voirdetail(Offres $Offre): Response
     {
 
         
-        return $this->render('voir_livre/detail.html.twig', [
-            'livres' => $livre,
+        return $this->render('voir_Offre/detail.html.twig', [
+            'Offres' => $Offre,
 
         ]);
     }
 
 
-    #[Route('/voir/livre/titre', name: 'app_voir_livre_titre')]
-    public function search(Request $request, LivresRepository $livrep, CategorieRepository $catrep): Response
+    #[Route('/voir/Offre/titre', name: 'app_voir_Offre_titre')]
+    public function search(Request $request, OffresRepository $Offrep, CategorieRepository $catrep): Response
     {
         $categories = $catrep->findAll();
         $searchTerm = $request->query->get('search');
@@ -71,7 +71,7 @@ class VoirLivreController extends AbstractController
         dump($priceRanges);
     
         // Create query builder
-        $queryBuilder = $livrep->createQueryBuilder('l')
+        $queryBuilder = $Offrep->createQueryBuilder('l')
             ->leftJoin('l.categorie', 'c')
             ->where('l.titre LIKE :searchTerm OR c.libelle LIKE :searchTerm OR l.Editeur LIKE :searchTerm')
             ->setParameter('searchTerm', '%' . $searchTerm . '%');
@@ -95,8 +95,8 @@ class VoirLivreController extends AbstractController
         $paginator = new Paginator($query, false);
         $maxPage = ceil(count($paginator) / $limit);
     
-        return $this->render('voir_livre/index.html.twig', [
-            'livres' => $paginator,
+        return $this->render('voir_Offre/index.html.twig', [
+            'Offres' => $paginator,
             'categories' => $categories,
             'page' => $page,
             'maxPage' => $maxPage,

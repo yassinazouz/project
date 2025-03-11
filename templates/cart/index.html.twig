@@ -23,22 +23,22 @@
 						<tbody>
 							{% for element in data %}
 								<tr>
-									<td>{{element.livre.titre}}</td>
+									<td>{{element.Offre.titre}}</td>
 									<td>
-										{{element.livre.prix}}
+										{{element.Offre.prix}}
 										$
 									</td>
 									<td>
 										<div class="d-flex align-items-center mb-4 pt-2">
 											<div class="input-group quantity mr-3" style="width: 130px;">
 												<div class="input-group-btn">
-													<a class="btn btn-primary btn-minus" href="{{ path('app_cart_remove', {'id': element.livre.id}) }}">
+													<a class="btn btn-primary btn-minus" href="{{ path('app_cart_remove', {'id': element.Offre.id}) }}">
 														<i class="fa fa-minus"></i>
 													</a>
 												</div>
 												<input type="text" class="form-control bg-secondary text-center" value={{element.quantite}}>
 												<div class="input-group-btn">
-													<a class="btn btn-primary btn-plus" href="{{ path('app_cart_add', {'id': element.livre.id}) }}">
+													<a class="btn btn-primary btn-plus" href="{{ path('app_cart_add', {'id': element.Offre.id}) }}">
 														<i class="fa fa-plus"></i>
 													</a>
 												</div>
@@ -48,10 +48,10 @@
 
 
 									</td>
-									<td>{{element.quantite * element.livre.prix}}
+									<td>{{element.quantite * element.Offre.prix}}
 										$</td>
 									<td>
-										<a href="{{ path('app_cart_delete', {'id': element.livre.id}) }}" class="btn btn-danger">Supprimer</a>
+										<a href="{{ path('app_cart_delete', {'id': element.Offre.id}) }}" class="btn btn-danger">Supprimer</a>
 
 
 									</td>

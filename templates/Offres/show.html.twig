@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Offres
+{% endblock %}
+
+{% block body %}
+	<h1>Détail du Offre
+		{{Offre.titre}}</h1>
+	<img src="{{Offre.image}}" alt="">
+	<H4>Prix :
+		{{Offre.prix}}</H4>
+	<H4>Editeur :
+		{{Offre.editeur}}</H4>
+	<H4>Date:
+		{{Offre.dateEdition|date('d-m-Y')}}</H4>
+	<p>{{Offre.resume}}</p>
+
+{% endblock %}

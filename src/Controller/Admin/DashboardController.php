@@ -2,11 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Categorie;
-use App\Entity\Livres;
+use App\Entity\Offres;
 use App\Entity\Orders;
 use App\Entity\User;
 use App\Repository\CategorieRepository;
-use App\Repository\LivresRepository;
+use App\Repository\OffresRepository;
 use App\Repository\OrdersDetailsRepository;
 use App\Repository\OrdersRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -27,7 +27,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin_dashboard')]
-    public function dashboard(CategorieRepository $categorieRepository, LivresRepository $livresRepository, OrdersDetailsRepository $ordersDetailsRepository, OrdersRepository $ordersRepository): Response
+    public function dashboard(CategorieRepository $categorieRepository, OffresRepository $OffresRepository, OrdersDetailsRepository $ordersDetailsRepository, OrdersRepository $ordersRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $categories = $categorieRepository->findAll();
@@ -46,7 +46,7 @@ class DashboardController extends AbstractDashboardController
             'labels' => $categNom,
             'datasets' => [
                 [
-                    'label' => 'Nombre de livres',
+                    'label' => 'Nombre de Offres',
                     'backgroundColor' => ['#49B3DA', '#F79A3E', '#6FB148'],
                     
                     'data' => $annoncesCount,
@@ -139,7 +139,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('OffresCrud', 'fas fa-solid fa-book', Livres::class);
+        yield MenuItem::linkToCrud('OffresCrud', 'fas fa-solid fa-book', Offres::class);
         yield MenuItem::linkToCrud('UserCrud', 'fas fa-regular fa-user', User::class);
         yield MenuItem::linkToCrud('CategorieCrud', 'fas fa-list', Categorie::class);
         yield MenuItem::linkToCrud('OrdersCrud', 'fas fa-solid fa-truck-fast', Orders::class);

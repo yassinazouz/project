@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Livres;
-use App\Repository\LivresRepository;
+use App\Entity\Offres;
+use App\Repository\OffresRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -14,21 +14,21 @@ class CartController extends AbstractController
 {
 
     #[Route('/', name: 'index')]
-    public function index(SessionInterface $session, LivresRepository $livresrep )
+    public function index(SessionInterface $session, OffresRepository $Offresrep )
     {
         $panier = $session->get('panier',[]);
         //dd($panier);
         $data = [];
         $total = 0;
         foreach($panier as $id => $quantite){
-            $livre = $livresrep->find($id);
+            $Offre = $Offresrep->find($id);
 
             $data[]= [
-                'livre' => $livre,
+                'Offre' => $Offre,
                 'quantite' => $quantite
 
             ];
-            $total += $livre->getPrix() * $quantite;
+            $total += $Offre->getPrix() * $quantite;
     }
     // dd($data)
 
@@ -37,9 +37,9 @@ class CartController extends AbstractController
 }
 
     #[Route('/add/{id}', name: 'add')]
-    public function add(Livres $livre, SessionInterface $session )
+    public function add(Offres $Offre, SessionInterface $session )
     {
-        $id = $livre->getId();
+        $id = $Offre->getId();
         $panier = $session->get('panier',[]);
         if(empty($panier[$id])){
             $panier[$id] = 1;
@@ -56,9 +56,9 @@ class CartController extends AbstractController
     }
 
     #[Route('/remove/{id}', name: 'remove')]
-    public function remove(Livres $livre, SessionInterface $session)
+    public function remove(Offres $Offre, SessionInterface $session)
 {
-    $id = $livre->getId();
+    $id = $Offre->getId();
     $panier = $session->get('panier', []);
 
     if (!empty($panier[$id])) {
@@ -75,9 +75,9 @@ class CartController extends AbstractController
 }
 
 #[Route('/delete/{id}', name: 'delete')]
-public function delete(Livres $livre, SessionInterface $session)
+public function delete(Offres $Offre, SessionInterface $session)
 {
-$id = $livre->getId();
+$id = $Offre->getId();
 $panier = $session->get('panier', []);
 
 if (!empty($panier[$id])) {

@@ -22,7 +22,7 @@ class OrdersDetails
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'ordersDetails')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Livres $livres = null;
+    private ?Offres $Offres = null;
 
 
 
@@ -62,14 +62,14 @@ class OrdersDetails
         return $this;
     }
 
-    public function getLivres(): ?Livres
+    public function getOffres(): ?Offres
     {
-        return $this->livres;
+        return $this->Offres;
     }
 
-    public function setLivres(?Livres $livres): static
+    public function setOffres(?Offres $Offres): static
     {
-        $this->livres = $livres;
+        $this->Offres = $Offres;
 
         return $this;
     }

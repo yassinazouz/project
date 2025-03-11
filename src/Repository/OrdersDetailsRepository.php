@@ -25,11 +25,11 @@ class OrdersDetailsRepository extends ServiceEntityRepository
         $startDate = new \DateTimeImmutable('2025-03-01');
         $endDate = new \DateTimeImmutable('2025-05-30');
         return $this->createQueryBuilder('od')
-            ->select('IDENTITY(od.livres) as id, l.titre, SUM(od.quantity) as quantity')
-            ->join('od.livres', 'l')
+            ->select('IDENTITY(od.Offres) as id, l.titre, SUM(od.quantity) as quantity')
+            ->join('od.Offres', 'l')
             ->join('od.orders', 'o')
             
-            ->groupBy('od.livres')
+            ->groupBy('od.Offres')
             ->orderBy('quantity', 'DESC')
             ->where('o.created_at BETWEEN :start_date AND :end_date')
             ->setParameter('start_date', $startDate)

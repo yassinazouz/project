@@ -24,7 +24,7 @@ class CategorieRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c.libelle as category', 'COUNT(l.id) as bookCount')
-            ->leftJoin('c.livres', 'l')
+            ->leftJoin('c.Offres', 'l')
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();
